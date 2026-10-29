@@ -62,6 +62,13 @@ def test_assignment_is_not_an_expression():
 def test_slop_declaration():
     (declaration,) = parse_source("slop a = 1✨")
     assert isinstance(declaration, VarDecl) and declaration.mutable
+    assert declaration.keyword.type is TokenType.SLOP
+
+
+def test_loadbearing_declaration():
+    (declaration,) = parse_source("loadbearing MAX = 1✨")
+    assert isinstance(declaration, VarDecl) and not declaration.mutable
+    assert declaration.keyword.type is TokenType.LOADBEARING
 
 
 def test_control_flow_shapes():
@@ -86,6 +93,12 @@ def test_function_declaration():
         ("clanker f() { ship✨ }", 1, "expected an expression, found '✨'"),
         ("slop x = 1", 1, "expected ✨ after variable declaration, but reached end of file"),
         ("slop x✨", 1, "expected '=' after variable name, an initializer is required, found '✨'"),
+        (
+            "loadbearing x✨",
+            1,
+            "expected '=' after variable name, an initializer is required, found '✨'",
+        ),
+        ("slop loadbearing = 1✨", 1, "expected a variable name after 'slop', found 'loadbearing'"),
         ("vibe ✅ { } nah hallucinate()✨", 1, "expected '{' after nah, found 'hallucinate'"),
         ("vibe ✅ hallucinate()✨", 1, "expected '{' after vibe condition, found 'hallucinate'"),
         ("f(1,)✨", 1, "expected an expression, found ')'"),

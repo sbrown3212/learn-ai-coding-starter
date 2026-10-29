@@ -93,6 +93,7 @@ class Block(Stmt):
 
 @dataclass(frozen=True)
 class VarDecl(Stmt):
+    keyword: Token
     name: Token
     initializer: Expr
     mutable: bool

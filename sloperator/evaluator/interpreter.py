@@ -59,9 +59,15 @@ class Interpreter:
 
     def execute(self, statement: Stmt) -> None:
         match statement:
-            case VarDecl(name, initializer, mutable):
+            case VarDecl(keyword, name, initializer, mutable):
                 value = self.evaluate(initializer)
-                self.environment.declare(name.lexeme, value, mutable, name.line)
+                self.environment.declare(
+                    name.lexeme,
+                    value,
+                    mutable,
+                    name.line,
+                    keyword.lexeme if not mutable else None,
+                )
             case Assign(name, _, value_expr):
                 value = self.evaluate(value_expr)
                 self.environment.assign(name.lexeme, value, name.line)

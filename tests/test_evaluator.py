@@ -69,6 +69,29 @@ def test_logical_operands_must_be_booleans():
     )
 
 
+def test_loadbearing_binding_cannot_be_assigned():
+    source = """loadbearing MAX = 3✨
+hallucinate(MAX)✨
+MAX = 4✨
+hallucinate(MAX)✨"""
+    result = run_source(source)
+    assert result.stdout == "3\n"
+    assert result.stderr == (
+        "SlopLang runtime error at line 3: cannot assign to loadbearing 'MAX'\n"
+    )
+
+
+def test_inner_block_can_shadow_a_loadbearing_binding():
+    source = """loadbearing mood = “calm”✨
+{
+    slop mood = “locked in”✨
+    mood = “changed”✨
+    hallucinate(mood)✨
+}
+hallucinate(mood)✨"""
+    assert run(source) == "changed\ncalm\n"
+
+
 def test_assignment_walks_up_the_scope_chain():
     source = """slop x = 1✨
 {
