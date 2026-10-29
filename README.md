@@ -112,6 +112,12 @@ A tree-walking interpreter for [SlopLang](docs/spec.md), written in Python.
 uv run sloperator.py examples/fib.slop
 ```
 
+To check a file's syntax without running it, pass `--check`:
+
+```bash
+uv run sloperator.py --check examples/fib.slop
+```
+
 ## Layout
 
 | Path                    | What it is                                             |
