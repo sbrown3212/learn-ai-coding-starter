@@ -1,6 +1,7 @@
 ---
 description: Review agent for bugs, edge cases, trade-offs, code quality, best practices, performance, and security; suggests changes without editing files
 mode: primary
+steps: 2
 permissions:
   - action: "*"
     resource: "*"
