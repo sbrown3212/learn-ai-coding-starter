@@ -58,6 +58,17 @@ def test_hallucinate_is_an_identifier_not_a_keyword():
     assert tokenize("hallucinate")[0].type is TokenType.IDENTIFIER
 
 
+def test_line_number_advances_after_comment():
+    tokens = tokenize("— first\n— second\nx")
+    assert [(token.lexeme, token.line) for token in tokens] == [("x", 3), ("", 3)]
+
+
+def test_error_after_comment_reports_correct_line():
+    with pytest.raises(LexicalError) as info:
+        tokenize("— comment\n$")
+    assert info.value.line == 2
+
+
 def test_string_may_contain_em_dash_and_opening_quote():
     assert tokenize("“x — “y”")[0].literal == "x — “y"
 
