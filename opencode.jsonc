@@ -32,5 +32,15 @@
       "resource": "explore",
       "effect": "deny",
     },
+    {
+      "action": "read",
+      "resource": "*.env.*",
+      "effect": "deny",
+    },
+    {
+      "action": "read",
+      "resource": "*.env",
+      "effect": "deny",
+    },
   ],
 }
