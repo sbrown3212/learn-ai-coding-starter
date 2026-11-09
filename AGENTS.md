@@ -29,6 +29,9 @@ next to the affected area (`tests/test_lexer*`, `tests/test_parser.py`,
 numbers, and error messages. New `examples/*.slop` files are picked up automatically
 by `tests/test_examples.py`, which requires a clean exit and non-empty stdout.
 
+For comparison or equality precedence changes, run the focused suite with
+`uv run pytest tests/test_comparisons.py`.
+
 ## Language behavior
 
 See [docs/spec.md](docs/spec.md) for syntax, values, operators, scoping, control flow,

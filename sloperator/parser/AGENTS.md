@@ -25,12 +25,12 @@
   errors. Track this with `function_depth`.
 - Error text is part of the contract. `tests/test_parser.py` asserts the exact line
   and message, and CLI tests assert the formatted diagnostic.
-- Known spec/code divergence: `logic_and` currently calls `comparison` instead of
-  `equality`, so `==` binds tighter than `<`; `docs/spec.md` says the opposite.
-  Change parser, spec, and tests together if fixing this.
+- Keep precedence order matching `docs/spec.md`: `logic_and` delegates to `equality`,
+  which delegates to `comparison`, which delegates to `term`.
 
 ## Validation
 
 - Parser tests: `uv run pytest tests/test_parser.py`
+- Comparison tests: `uv run pytest tests/test_comparisons.py`
 - Error-message tests: `uv run pytest tests/test_errors.py`
 - Full check: `uv run pytest`
