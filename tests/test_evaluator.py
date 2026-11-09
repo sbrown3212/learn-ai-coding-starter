@@ -1,5 +1,11 @@
+import io
+
 import pytest
 
+from sloperator.evaluator.interpreter import Interpreter
+from sloperator.evaluator.values import Builtin
+from sloperator.lexer import tokenize
+from sloperator.parser import parse
 from sloperator.runner import run_source
 
 
@@ -248,3 +254,18 @@ hallucinate(n)✨"""
 def test_empty_program_produces_nothing():
     result = run_source("— nothing but a comment\n")
     assert (result.stdout, result.stderr, result.exit_code) == ("", "", 0)
+
+
+def test_builtins_receive_arguments_as_an_immutable_tuple():
+    received: list[tuple[object, ...]] = []
+
+    def probe(arguments: tuple[object, ...], _line: int) -> None:
+        received.append(arguments)
+        return None
+
+    interpreter = Interpreter(io.StringIO())
+    interpreter.globals.declare("probe", Builtin("probe", probe), False, 0)
+    interpreter.run(parse(tokenize("probe(1, “two”, ✅)✨")))
+
+    assert received == [(1, "two", True)]
+    assert isinstance(received[0], tuple)
