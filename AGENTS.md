@@ -21,6 +21,11 @@ Run these four commands from the project root:
 3. `uv run ruff check`
 4. `uv run ty check`
 
+Apply formatting with `uv run ruff format` exactly once per task, as the last step
+after all code changes are complete. Do not run the formatter after each edit, so it
+is not executed repeatedly throughout a single change. Then run the validation
+commands above to confirm nothing would change.
+
 ## Regression tests
 
 Add a regression test whenever you fix a bug or change observable behavior. Put it
