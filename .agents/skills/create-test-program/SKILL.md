@@ -101,23 +101,33 @@ The harness intentionally parametrizes over the table rather than over every fil
 `examples/`. That keeps the suite green as new examples land, without demanding a
 backfill of exact output for programs nobody has pinned yet.
 
-## 5. Validate
+## 5. Format
 
-Run the focused tests first so failures are easy to read:
+Apply the formatter once, after the example and test are final:
+
+```bash
+uv run ruff format
+```
+
+`AGENTS.md` asks for exactly one formatting pass per task, as the last step after code
+changes. Doing it here means the files are ready for whatever checks run next, and
+nobody has to reformat after a check points it out.
+
+## 6. Run the focused tests
 
 ```bash
 uv run pytest tests/test_example_outputs.py tests/test_examples.py
 ```
 
-Then run the project checks. Format once at the end, after all edits are in:
+These two files are the whole scope here: they prove the example runs and that its
+output matches what was captured. The rest of the project checks belong to a separate
+validation step, so this skill stays a fast file-producing step on its own and drops
+cleanly into a larger workflow without running anything twice.
 
-```bash
-uv run ruff format && uv run pytest && uv run ruff check && uv run ty check
-```
-
-Report what the program prints and which checks passed. If an assertion fails, the
-mismatch is the interesting part: say what was expected, what came out, and whether the
-example or the interpreter is wrong. Do not adjust the expectation just to make it pass.
+Report what the program prints and whether the focused tests passed. If an assertion
+fails, the mismatch is the interesting part: say what was expected, what came out, and
+whether the example or the interpreter is wrong. Do not adjust the expectation just to
+make it pass.
 
 ## When the feature is missing
 
