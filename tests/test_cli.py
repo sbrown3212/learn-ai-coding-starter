@@ -19,6 +19,30 @@ def test_runs_a_file():
     assert completed.stderr == ""
 
 
+def test_variable_names_may_contain_digits_after_the_first_character(tmp_path: Path):
+    program = tmp_path / "score2.slop"
+    program.write_text(
+        "slop score2 = 40✨\nscore2 = score2 + 2✨\nhallucinate(score2)✨\n",
+        encoding="utf-8",
+    )
+    completed = run_cli(str(program))
+    assert completed.returncode == 0
+    assert completed.stdout == "42\n"
+    assert completed.stderr == ""
+
+
+def test_function_and_parameter_names_may_contain_digits(tmp_path: Path):
+    program = tmp_path / "add2.slop"
+    program.write_text(
+        "clanker add2(value2) {\n    ship value2 + 2✨\n}\nhallucinate(add2(40))✨\n",
+        encoding="utf-8",
+    )
+    completed = run_cli(str(program))
+    assert completed.returncode == 0
+    assert completed.stdout == "42\n"
+    assert completed.stderr == ""
+
+
 def test_error_goes_to_stderr_after_earlier_output(tmp_path: Path):
     program = tmp_path / "boom.slop"
     program.write_text("hallucinate(“before”)✨\nhallucinate(missing)✨\n", encoding="utf-8")
