@@ -56,7 +56,8 @@
       },
       "notion": {
         "type": "remote",
-        "url": "https://mcp.notion.com/mcp"
+        "url": "https://mcp.notion.com/mcp",
+        "disabled": true
       }
     }
   },
