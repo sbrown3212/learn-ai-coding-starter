@@ -61,6 +61,7 @@
       },
       "playwright": {
         "type": "local",
+        "disabled": true,
         "command": [
           "bunx",
           "--bun",
@@ -69,6 +70,10 @@
           "--browser",
           "chromium"
         ]
+      },
+      "chrome-devtools": {
+        "type": "local",
+        "command": ["bunx", "--bun", "chrome-devtools-mcp@latest", "--isolated"]
       }
     }
   },
